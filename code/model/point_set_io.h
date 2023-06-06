@@ -34,7 +34,9 @@ public:
 	static PointSet* read(const std::string& file_name);
 
 	// save the point set to a file. return false if failed.
-	static bool		 save(const std::string& file_name, const PointSet* point_set);
+	static bool save(const std::string& file_name, const PointSet* point_set);
+
+	static bool save_ply(const std::string& file_name, PointSet* point_set);
 };
 
 #endif

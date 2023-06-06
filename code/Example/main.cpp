@@ -34,7 +34,10 @@ int main(int argc, char **argv)
     Logger::initialize();
 
     // input point cloud file name
-    const std::string input_file = std::string(POLYFIT_CODE_DIR) + "/../data/toy_data.bvg";
+    std::string input_file = std::string(POLYFIT_CODE_DIR) + "/../data/toy_data.bvg";
+    if (argc > 1)
+        input_file = std::string(argv[1]);
+
     // output mesh file name
     const std::string output_file = std::string(POLYFIT_CODE_DIR) + "/../data/toy_data-result.obj";
 
@@ -50,13 +53,19 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    const std::string temp_file = std::string(POLYFIT_CODE_DIR) + "/../data/toy_data-temp.ply";
+    PointSetIO::save_ply(temp_file, pset);
+
     // step 1: refine planes
     std::cout << "refining planes..." << std::endl;
     const std::vector<VertexGroup::Ptr>& groups = pset->groups();
     if (groups.empty()) {
         std::cerr << "planar segments do not exist" << std::endl;
         return EXIT_FAILURE;
+    } else {
+        std::cout << "Groups: " << groups.size() << std::endl;
     }
+
     HypothesisGenerator hypothesis(pset);
     hypothesis.refine_planes();
 

@@ -62,11 +62,28 @@ SCIP_RETCODE setupProblem(
    /* create empty problem */
    SCIP_CALL( SCIPcreateProbBasic(scip, "circle") );
 
+
+   // EXTERN
+   // SCIP_RETCODE SCIPcreateVarBasic(
+   //    SCIP*                 scip,               /**< SCIP data structure */
+   //    SCIP_VAR**            var,                /**< pointer to variable object */
+   //    const char*           name,               /**< name of variable, or NULL for automatic name creation */
+   //    SCIP_Real             lb,                 /**< lower bound of variable */
+   //    SCIP_Real             ub,                 /**< upper bound of variable */
+   //    SCIP_Real             obj,                /**< objective function value */
+   //    SCIP_VARTYPE          vartype             /**< type of variable */
+   //    );
+
    /* create variables and add to problem */
    SCIP_CALL( SCIPcreateVarBasic(scip, &a, "a", -SCIPinfinity(scip), SCIPinfinity(scip), 0.0, SCIP_VARTYPE_CONTINUOUS) );
    SCIP_CALL( SCIPcreateVarBasic(scip, &b, "b", -SCIPinfinity(scip), SCIPinfinity(scip), 0.0, SCIP_VARTYPE_CONTINUOUS) );
    SCIP_CALL( SCIPcreateVarBasic(scip, &r, "r", 0.0, SCIPinfinity(scip), 1.0, SCIP_VARTYPE_CONTINUOUS) );
 
+   // EXTERN
+   // SCIP_RETCODE SCIPaddVar(
+   //    SCIP*                 scip,               /**< SCIP data structure */
+   //    SCIP_VAR*             var                 /**< variable to add */
+   //    );
    SCIP_CALL( SCIPaddVar(scip, a) );
    SCIP_CALL( SCIPaddVar(scip, b) );
    SCIP_CALL( SCIPaddVar(scip, r) );
@@ -84,6 +101,21 @@ SCIP_RETCODE setupProblem(
       xy[1] = -SCIPrandomGetReal(randnumgen, 1.0, 10.0);
 
       (void) SCIPsnprintf(name, SCIP_MAXSTRLEN, "point%d", i);
+
+      // EXTERN
+      // SCIP_RETCODE SCIPcreateConsBasicSOC(
+      //    SCIP*                 scip,               /**< SCIP data structure */
+      //    SCIP_CONS**           cons,               /**< pointer to hold the created constraint */
+      //    const char*           name,               /**< name of constraint */
+      //    int                   nvars,              /**< number of variables on left hand side of constraint (n) */
+      //    SCIP_VAR**            vars,               /**< array with variables on left hand side (x_i) */
+      //    SCIP_Real*            coefs,              /**< array with coefficients of left hand side variables (alpha_i), or NULL if all 1.0 */
+      //    SCIP_Real*            offsets,            /**< array with offsets of variables (beta_i), or NULL if all 0.0 */
+      //    SCIP_Real             constant,           /**< constant on left hand side (gamma) */
+      //    SCIP_VAR*             rhsvar,             /**< variable on right hand side of constraint (x_{n+1}) */
+      //    SCIP_Real             rhscoeff,           /**< coefficient of variable on right hand side (alpha_{n+1}) */
+      //    SCIP_Real             rhsoffset           /**< offset of variable on right hand side (beta_{n+1}) */
+      //    );
       SCIP_CALL( SCIPcreateConsBasicSOC(scip, &cons, name, 2, ab, NULL, xy, 0.0, r, 1.0, 0.0) );
       SCIP_CALL( SCIPaddCons(scip, cons) );
       SCIP_CALL( SCIPreleaseCons(scip, &cons) );

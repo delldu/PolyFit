@@ -136,6 +136,7 @@ void HypothesisGenerator::refine_planes() {
 
 	float theta = 10.0f;				// in degree
 	theta = static_cast<float>(M_PI * theta / 180.0f);	// in radian
+	float cos_theta = std::cos(theta);
 	bool merged = false;
 	do
 	{
@@ -151,7 +152,7 @@ void HypothesisGenerator::refine_planes() {
 				VertexGroup* g2 = groups[j];
 				const Plane3d& plane2 = g2->plane();
 				const vec3& n2 = plane2.normal();
-				if (std::abs(dot(n1, n2)) > std::cos(theta)) {
+				if (std::abs(dot(n1, n2)) > cos_theta) {
 					const std::list<unsigned int>& set1on2 = points_on_plane(g1, plane2, avg_max_dist);
 					const std::list<unsigned int>& set2on1 = points_on_plane(g2, plane1, avg_max_dist);
 					if (set1on2.size() > num_threshold || set2on1.size() > num_threshold) {
